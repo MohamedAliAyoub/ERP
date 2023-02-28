@@ -1,0 +1,57 @@
+
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php73” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php73___lsphp .php .php7 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
+<IfModule mod_rewrite.c>
+
+  RewriteEngine  On
+  RewriteRule ^(.*)$ public/$1 [L]
+
+</IfModule>
+
+RewriteCond %{HTTP_REFERER} !^http://btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://demo.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://demo.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://hr.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://hr.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://hrsys.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://hrsys.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://pos.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://pos.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.demo.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.demo.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.hr.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.hr.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.hrsys.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.hrsys.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.pos.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.pos.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://demo.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://demo.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://hr.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://hr.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://hrsys.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://hrsys.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://pos.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://pos.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.demo.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.demo.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.hr.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.hr.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.hrsys.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.hrsys.btech-kw.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.pos.btech-kw.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.pos.btech-kw.com$      [NC]
+RewriteRule .*\.(jpg|jpeg|gif|png|bmp)$ - [F,NC]
+
