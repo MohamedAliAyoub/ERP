@@ -57,14 +57,16 @@
                                 </td>
                                 <td>
 
-                                    <div class="btn-group dropdown m-r-10">
-                                         <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default dropdown-toggle waves-effect waves-light" type="button"><i class="fa fa-gears "></i></button>
-                                        <ul role="menu" class="dropdown-menu pull-right">
-                                            <li><a href="{{ route('admin.teams.edit', [$group->id]) }}"><i class="icon-settings"></i> @lang('app.manage')</a></li>
-                                            <li><a href="javascript:;"  data-group-id="{{ $group->id }}" class="sa-params"><i class="fa fa-times" aria-hidden="true"></i> @lang('app.delete') </a></li>
+                                    @if(auth()->user()->checkManger() == false )
+                                        <div class="btn-group dropdown m-r-10">
+                                            <button aria-expanded="false" data-toggle="dropdown" class="btn btn-default dropdown-toggle waves-effect waves-light" type="button"><i class="fa fa-gears "></i></button>
+                                            <ul role="menu" class="dropdown-menu pull-right">
+                                                <li><a href="{{ route('admin.teams.edit', [$group->id]) }}"><i class="icon-settings"></i> @lang('app.manage')</a></li>
+                                                <li><a href="javascript:;"  data-group-id="{{ $group->id }}" class="sa-params"><i class="fa fa-times" aria-hidden="true"></i> @lang('app.delete') </a></li>
 
-                                        </ul>
-                                    </div>
+                                            </ul>
+                                        </div>
+                                    @endif
                                 </td>
                             </tr>
                         @empty
