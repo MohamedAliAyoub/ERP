@@ -88,10 +88,10 @@ class LoginController extends FrontBaseController
         $user = User::where($this->username(), $request->{$this->username()})->first();
 
         if ($setting->google_recaptcha_status && (is_null($user) || ($user))) {
-            if($setting->google_captcha_version == 'v2'){
+            if ($setting->google_captcha_version == 'v2') {
                 $rules['g-recaptcha-response'] = 'required';
 
-            }else{
+            } else {
                 $rules['recaptcha_token'] = 'required';
             }
         }
@@ -143,20 +143,29 @@ class LoginController extends FrontBaseController
         $setting = GlobalSetting::first();
         $this->validateLogin($request);
 
+
         // User type from email/username
-        $user = User::where($this->username(), $request->{$this->username()})->first();
+        $user = User::
+        with('employeeDetail')
+            ->where($this->username(), $request->{$this->username()})
+            ->orWhereHas('employeeDetail', function ($q) use ($request) {
+                $q->where('employee_id', $request->{$this->username()});
+            })
+            ->first();
+
 
         if ($user && !$user->super_admin && $user->company->status == 'inactive' && !$user->hasRole('client')) {
             return $this->companyInactiveMessage();
         }
 
+
         // Check google recaptcha if setting is enabled
         if ($setting->google_recaptcha_status && (is_null($user) || ($user && !$user->super_admin))) {
-                 // Checking is google recaptcha is valid
-                $gRecaptchaResponseInput = 'g-recaptcha-response';
-                $gRecaptchaResponse = $setting->google_captcha_version == 'v2' ? $request->{$gRecaptchaResponseInput} : $request->get('recaptcha_token');
+            // Checking is google recaptcha is valid
+            $gRecaptchaResponseInput = 'g-recaptcha-response';
+            $gRecaptchaResponse = $setting->google_captcha_version == 'v2' ? $request->{$gRecaptchaResponseInput} : $request->get('recaptcha_token');
 
-                $validateRecaptcha = $this->validateGoogleRecaptcha($gRecaptchaResponse);
+            $validateRecaptcha = $this->validateGoogleRecaptcha($gRecaptchaResponse);
 
             if (!$validateRecaptcha) {
                 return $this->googleRecaptchaMessage();
@@ -187,15 +196,34 @@ class LoginController extends FrontBaseController
         return $this->sendFailedLoginResponse($request);
     }
 
+    protected function attemptLogin(Request $request)
+    {
+        return $this->guard()->attempt(
+            $this->credentials($request), $request->filled('remember')
+        );
+    }
+
     protected function credentials(\Illuminate\Http\Request $request)
     {
-        //return $request->only($this->username(), 'password');
-        return [
-            'email' => $request->{$this->username()},
-            'password' => $request->password,
-            'status' => 'active',
-            'login' => 'enable'
-        ];
+
+        if (filter_var($request->{$this->username()}, FILTER_VALIDATE_EMAIL))
+            return [
+                'email' => $request->{$this->username()},
+                'password' => $request->password,
+                'status' => 'active',
+                'login' => 'enable'
+            ];
+        else
+            return [
+                'employee_id' => function ($query) use ($request) {
+                    $query->whereHas('employeeDetail', function ($query) use ($request) {
+                        $query->where('employee_id', $request->{$this->username()});
+                    });
+                },
+                'password' => $request->password,
+                'status' => 'active',
+                'login' => 'enable'
+            ];
     }
 
     protected function redirectTo()
@@ -229,7 +257,7 @@ class LoginController extends FrontBaseController
     /**
      * Log the user out of the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function logout(Request $request)
@@ -266,7 +294,7 @@ class LoginController extends FrontBaseController
             $companies = [];
 
             if ($user && User::isClient($user->id)) {
-                $companies[]  = $user->company_id;
+                $companies[] = $user->company_id;
                 $client = true;
                 foreach ($user->client as $item) {
                     $companies[] = $item->company_id;
@@ -322,7 +350,6 @@ class LoginController extends FrontBaseController
             ])->status(Response::HTTP_TOO_MANY_REQUESTS);
         }
 
-
         $user = User::where('email', '=', $data->email)->first();
         if ($user) {
             // User found
@@ -349,7 +376,7 @@ class LoginController extends FrontBaseController
 
             \Auth::login($user);
             return redirect()->intended($this->redirectPath());
-        }else{
+        } else {
             return redirect()->route('login')->with(['message' => __('messages.unAuthorisedUser')]);
         }
 

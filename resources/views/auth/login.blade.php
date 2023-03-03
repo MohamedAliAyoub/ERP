@@ -14,7 +14,7 @@
 
         <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
             <div class="col-xs-12">
-                <input class="form-control" id="email" type="email" name="email" value="{{ old('email') }}" autofocus
+                <input class="form-control" id="email" type="text" name="email" value="{{ old('email') }}" autofocus
                     required="" placeholder="@lang('app.email')">
                 @if ($errors->has('email'))
                     <div class="help-block with-errors">{{ $errors->first('email') }}</div>

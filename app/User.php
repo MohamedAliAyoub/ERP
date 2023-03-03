@@ -31,6 +31,7 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
     ];
     protected $fillable = [
         'name', 'email', 'password', 'mobile', 'login', 'status', 'image', 'gender', 'locale', 'onesignal_player_id', 'email_notifications', 'country_id'
+
     ];
 
     /**
@@ -185,6 +186,9 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
     public function employeeDetail()
     {
         return $this->hasOne(EmployeeDetails::class, 'user_id');
+    }
+    public function getEmployeeIDAttribute(){
+        return $this->employeeDetail->employee_id ;
     }
 
     public function googleAccount()

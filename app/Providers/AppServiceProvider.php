@@ -31,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->instance(BaseDatabaseChannel::class, new MyDatabaseChannel());
 
+        \Illuminate\Support\Facades\Auth::provider('custom_eloquent', function($app, array $config) {
+            return new CustomUserProvider($app['hash'], $config['model']);
+        });
     }
 
     /**
