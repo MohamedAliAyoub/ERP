@@ -86,7 +86,7 @@
     </div>
     <div class="sidebar-nav navbar-collapse slimscrollsidebar">
 
-        <!-- .admin Profile  -->
+        <!-- .admin sidebar  -->
             @if(!auth()->user()->checkManger())
             <ul class="nav" id="side-menu">
             <li class="sidebar-search hidden-sm hidden-md hidden-lg">
@@ -329,6 +329,8 @@
 
         </ul>
         @else
+            <!-- .manger sidebar  -->
+
             <ul class="nav" id="side-menu">
 
 
@@ -357,23 +359,14 @@
                     </ul>
                 </li>
 
-                <li><a href="{{ route('admin.dashboard') }}" class="waves-effect"><i class="icon-speedometer fa-fw"></i> <span class="hide-menu"> @lang('app.menu.dashboard') <span class="fa arrow"></span> </span></a>
-                    <ul class="nav nav-second-level">
+                    <ul class="nav">
                         <li>
-                            <a href="{{ route('admin.dashboard') }}" class="waves-effect">
-                                @lang('app.menu.dashboard')
+                             <a href="{{ route('admin.dashboard') }}" class="waves-effect">
+                                 <i class="icon-speedometer fa-fw"></i>    @lang('app.menu.dashboard')
                             </a>
                         </li>
-
-                        @if(in_array('employees', $modules) || in_array('attendance', $modules) || in_array('holidays', $modules) || in_array('leaves', $modules))
-                            <li>
-                                <a href="{{ route('admin.hrDashboard') }}" class="waves-effect">
-                                    @lang('app.menu.hrDashboard')
-                                </a>
-                            </li>
-                        @endif
                    </ul>
-                </li>
+
 
                 @if(in_array('employees', $modules) || in_array('attendance', $modules) || in_array('holidays', $modules) || in_array('leaves', $modules))
                     <li><a href="{{ route('admin.employees.index') }}" class="waves-effect
@@ -382,8 +375,6 @@
                         <ul class="nav nav-second-level {{ request()->is('admin/leave*') ? 'collapse in' : '' }}">
                             @if(in_array('employees',$modules))
                                 <li><a href="{{ route('admin.employees.index') }}">@lang('app.menu.employeeList')</a></li>
-                                <li><a href="{{ route('admin.teams.index') }}">@lang('app.department')</a></li>
-                                <li><a href="{{ route('admin.designations.index') }}">@lang('app.menu.designation')</a></li>
                             @endif
                             @if(in_array('attendance',$modules))
                                 <li><a href="{{ route('admin.attendances.summary') }}" class="waves-effect">@lang('app.menu.attendance')</a> </li>
@@ -453,8 +444,7 @@
 
                     </ul>
                 </li>
-                <li><a href="{{ route('admin.settings.index') }}" class="waves-effect"><i class="ti-settings fa-fw"></i> <span class="hide-menu"> @lang('app.menu.settings')</span></a>
-                </li>
+
 
                 {{--            <li><a href="" class="waves-effect"><i class="ti-settings fa-fw"></i> <span class="hide-menu"> @lang('app.menu.settings') <span class="fa arrow"></span> </span></a>--}}
                 {{--                    <ul class="nav nav-second-level collapse">--}}
