@@ -26,7 +26,7 @@ class LeaveType extends BaseModel
     public function leavesCount()
     {
         return $this->leaves()
-            ->selectRaw('leave_type_id, count(*) as count')
+            ->selectRaw('leave_type_id, sum(days_count) as count')
             ->groupBy('leave_type_id');
     }
 

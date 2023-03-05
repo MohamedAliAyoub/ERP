@@ -61,6 +61,16 @@
                     </div>
                 </div>
 
+                <div class="col-xs-12 ">
+                    <div class="form-group">
+                        <label>@lang('modules.sticky.holiday_status')</label>
+                        <select  name="holiday_status">
+                            <option value="1" data-color="#5475ed" selected>Ture</option>
+                            <option value="0" data-color="#f1c411">False</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
         </div>
         <div class="form-actions">

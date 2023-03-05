@@ -514,6 +514,7 @@ return array(
             'addNote' => 'Add Note',
             'lastUpdated' => 'Updated',
             'colors' => 'Color',
+            'holiday_status' => 'holiday status',
         ),
     'taskReport' =>
         array(
@@ -1049,6 +1050,7 @@ return array(
             'leaveDate' => 'Leave Date',
             'rejectReason' => 'Reject Reason',
             'leavePaidStatus' => 'Leave Paid Status',
+            'holidayStatus' => 'Holiday Status',
             'createLeaveType'=>'Create Leave Type',
         ),
     'low' => 'Low',
@@ -1421,6 +1423,9 @@ return array(
             'discount' => 'Discount',
             'total' => 'Total',
             'paid' => 'Paid',
+            'holiday' => 'Holiday',
+            'true' => 'True',
+            'false' => 'false',
             'unpaid' => 'Unpaid',
             'partial' => 'Partial',
             'addCreditNote' => 'Add Credit Note',

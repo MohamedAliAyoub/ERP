@@ -65,13 +65,14 @@
                                                 <th>@lang('modules.leaves.leaveType')</th>
                                                 <th>@lang('modules.leaves.noOfLeaves')</th>
                                                 <th>@lang('modules.leaves.leavePaidStatus')</th>
+                                                <th>@lang('modules.leaves.holidayStatus')</th>
                                                 <th>@lang('app.action')</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             @forelse($leaveTypes as $key=>$leaveType)
                                                 <tr id="type-{{ $leaveType->id }}">
-                                                    @php 
+                                                    @php
                                                         $type = str_replace(' ', '',$leaveType->type_name);
                                                      @endphp
                                                     <td>
@@ -90,7 +91,13 @@
                                                         <option @if($leaveType->paid == 1) selected @endif value="1">@lang('modules.credit-notes.paid')</option>
                                                         <option @if($leaveType->paid == 0) selected @endif value="0">@lang('modules.credit-notes.unpaid')</option>
                                                         </select>
-                                                    </td>   
+                                                    </td>
+                                                    <td>
+                                                        <select  class="form-control holiday_status-{{ $leaveType->id }}"  name="holiday_status" id="holiday_status" >
+                                                            <option @if($leaveType->holiday_status == 1) selected @endif value="1">@lang('modules.credit-notes.true')</option>
+                                                            <option @if($leaveType->holiday_status == 0) selected @endif value="0">@lang('modules.credit-notes.false')</option>
+                                                        </select>
+                                                    </td>
                                                     <td>
                                                         <button type="button" data-type-id="{{ $leaveType->id }}"
                                                                 class="btn btn-sm btn-success btn-rounded update-category">
@@ -131,6 +138,15 @@
                                                         <option value="danger" data-color="#ed4040">Red</option>
                                                         <option value="success" data-color="#00c292">Green</option>
                                                         <option value="inverse" data-color="#4c5667">Grey</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 ">
+                                                <div class="form-group">
+                                                    <label>@lang('modules.sticky.holiday_status')</label>
+                                                    <select  class="form-control" name="holiday_status">
+                                                        <option value="1" data-color="#5475ed" selected>Ture</option>
+                                                        <option value="0" data-color="#f1c411">False</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -215,6 +231,7 @@
             var id = $(this).data('type-id');
             var leaves = $('.leave-count-'+id).val();
             var paid = $('.paid_status-'+id).find(":selected").val();
+            var holiday_status = $('.holiday_status-'+id).find(":selected").val();
             var url = "{{ route('admin.leaveType.update',':id') }}";
             url = url.replace(':id', id);
 
@@ -223,7 +240,7 @@
             $.easyAjax({
                 type: 'POST',
                 url: url,
-                data: {'_token': token, '_method': 'PUT', 'leaves': leaves,'paid':paid}
+                data: {'_token': token, '_method': 'PUT', 'leaves': leaves,'paid':paid , 'holiday_status' :holiday_status}
             });
         });
 

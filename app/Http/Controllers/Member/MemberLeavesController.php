@@ -34,14 +34,17 @@ class MemberLeavesController extends MemberBaseController
     public function index()
     {
         $this->leaves = Leave::byUser($this->user->id);
+        $this->leaves_taken = Leave::byUser($this->user->id)->sum('days_count');
         $this->leavesCount = Leave::byUserCount($this->user->id);
         $this->leaveTypes = LeaveType::byUser($this->user->id);
+
         $this->allowedLeaves = $this->user->leaveTypes->sum('no_of_leaves');
         $this->pendingLeaves = Leave::where('status', 'pending')
             ->where('user_id', $this->user->id)
             ->orderBy('leave_date', 'asc')
             ->get();
         $this->employeeLeavesQuota = $this->user->leaveTypes;
+
 
         return view('member.leaves.index', $this->data);
     }
@@ -67,17 +70,15 @@ class MemberLeavesController extends MemberBaseController
         $multi_date =  Carbon::parse($start);
         $multi_date_end = Carbon::parse($end);
         $diff = $multi_date->diffInDays($multi_date_end);
+        $dates =collect();
+        $dates->push($multi_date->format("Y-m-d") );
 
-//        dd( date_diff($multi_date,$multi_date_end) , $multi_date , $multi_date_end , $diff  );
-        $dates =collect();;
         for ($i=0 ; $i < $diff ; $i++)
         {
-            $day = $multi_date->addDays();
-            if($day->format("D") == "Fri"  )
-            {
-                echo " " ;
-            }
-            else $dates->push($day->format("Y-m-d") );
+
+            $day = $multi_date->addDays() ;
+            if($day->format("D") != "Fri"  )
+                $dates->push($day->format("Y-m-d") );
         }
         return $dates ;
     }
@@ -85,10 +86,15 @@ class MemberLeavesController extends MemberBaseController
     {
         if ($request->duration == 'multiple') {
             $multiDates =$this->days($request->multi_date , $request->multi_date_end);
+            $holiday_status = LeaveType::where('id' , $request->leave_type_id)->first();
             session(['leaves_duration' => 'multiple']);
 
             $leaveApplied = Leave::select(DB::raw('DATE_FORMAT(leave_date, "%Y-%m-%d") as leave_date_new'))->where('user_id', $request->user_id)->whereIn('leave_date', $multiDates)->pluck('leave_date_new')->toArray();
+
+            if ($holiday_status->holiday_status == 1)
             $holidays = Holiday::select(DB::raw('DATE_FORMAT(date, "%Y-%m-%d") as holiday_date'))->whereIn('date', $multiDates)->pluck('holiday_date')->toArray();
+           else
+               $holidays = [];
             $daysOff = array_unique (array_merge([] , $holidays) );
 
 
@@ -96,7 +102,6 @@ class MemberLeavesController extends MemberBaseController
             for($i = 0 ; $i< count($daysOff ) ;$i++){
                 if(in_array($daysOff[$i] ,  array_unique($multiDates->toArray()) ) ){
                      array_push($removedIds , $i);
-
                 }
             }
 
@@ -138,6 +143,7 @@ class MemberLeavesController extends MemberBaseController
             $leave->leave_date = $dateInsert;
             $leave->reason = $request->reason;
             $leave->status = $request->status;
+            $leave->days_count = 1;
             $leave->save();
         }
 

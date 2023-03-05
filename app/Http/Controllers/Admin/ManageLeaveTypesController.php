@@ -46,6 +46,7 @@ class ManageLeaveTypesController extends AdminBaseController
         $leaveType->color = $request->color;
         $leaveType->paid = $request->paid;
         $leaveType->no_of_leaves = $request->leave_number;
+        $leaveType->holiday_status = $request->holiday_status;
         $leaveType->save();
 
         if($request->all_employees == 'no'){
@@ -101,6 +102,8 @@ class ManageLeaveTypesController extends AdminBaseController
         $type = LeaveType::findOrFail($id);
         $type->no_of_leaves = $request->leaves;
         $type->paid = $request->paid;
+        $type->holiday_status = $request->holiday_status;
+
         $type->save();
 
         return Reply::success(__('messages.leaveTypeAdded'));

@@ -65,7 +65,7 @@
                                 @if (isset($employeeLeavesQuota[$key]) && $employeeLeavesQuota[$key]->no_of_leaves > 0)
                                     <li>{{ ucfirst($leaveType->type_name) }}
                                         <span class="pull-right label-{{ $leaveType->color }} label">{{ (isset($leaveType->leavesCount[0])) ? $leaveType->leavesCount[0]->count : '0' }}</span>
-                                    </li>                                    
+                                    </li>
                                 @endif
                             @empty
                                 <li>@lang('messages.noRecordFound')</li>
@@ -73,8 +73,8 @@
                         </ul>
                     </div>
 
-                    <div class="col-md-3 col-md-offset-1 text-center"><span class="donut" data-peity='{ "fill": ["red", "#eeeeee"],    "innerRadius": 40, "radius": 60 }'>{{ count($leaves) }}/{{ $allowedLeaves }}</span><br>
-                        <div class="btn btn-inverse btn-rounded">@lang('modules.leaves.leavesTaken') : {{ $leavesCount }}/{{ $allowedLeaves }}</div>
+                    <div class="col-md-3 col-md-offset-1 text-center"><span class="donut" data-peity='{ "fill": ["red", "#eeeeee"],    "innerRadius": 40, "radius": 60 }'>{{ $leaves_taken }}/{{ $allowedLeaves }}</span><br>
+                        <div class="btn btn-inverse btn-rounded">@lang('modules.leaves.leavesTaken') : {{ $leaves_taken }}/{{ $allowedLeaves }}</div>
                     </div>
                 </div>
             </div>
