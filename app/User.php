@@ -52,7 +52,7 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
     {
         parent::boot();
 
-        static::observe(UserObserver::class);
+//        static::observe(UserObserver::class);
         static::addGlobalScope('active', function (Builder $builder) {
             $builder->where('users.status', '=', 'active');
         });
