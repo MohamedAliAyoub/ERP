@@ -16,7 +16,6 @@ class Leave extends BaseModel
         parent::boot();
 
 //        static::observe(LeaveObserver::class);
-
         static::addGlobalScope(new CompanyScope);
     }
 

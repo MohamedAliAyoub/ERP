@@ -66,27 +66,32 @@ class MemberLeavesController extends MemberBaseController
     }
 
 
-    public function days($start , $end){
+    public function days($start , $end , $status){
         $multi_date =  Carbon::parse($start);
         $multi_date_end = Carbon::parse($end);
         $diff = $multi_date->diffInDays($multi_date_end);
+//        dd($diff +1 , $multi_date->addDays() );
         $dates =collect();
         $dates->push($multi_date->format("Y-m-d") );
-
         for ($i=0 ; $i < $diff ; $i++)
         {
-
-            $day = $multi_date->addDays() ;
-            if($day->format("D") != "Fri"  )
+            $day = $multi_date->addDays();
+            if($status == 1)
+            {
+                if($day->format("D") != "Fri"  )
+                    $dates->push($day->format("Y-m-d") );
+            }else
                 $dates->push($day->format("Y-m-d") );
+
         }
         return $dates ;
     }
     public function store(StoreLeave $request)
     {
-        if ($request->duration == 'multiple') {
-            $multiDates =$this->days($request->multi_date , $request->multi_date_end);
-            $holiday_status = LeaveType::where('id' , $request->leave_type_id)->first();
+        $holiday_status = LeaveType::where('id' , $request->leave_type_id)->first();
+
+        if ($request->duration == 'multiple' ) {
+            $multiDates =$this->days($request->multi_date , $request->multi_date_end  ,$holiday_status->holiday_status);
             session(['leaves_duration' => 'multiple']);
 
             $leaveApplied = Leave::select(DB::raw('DATE_FORMAT(leave_date, "%Y-%m-%d") as leave_date_new'))->where('user_id', $request->user_id)->whereIn('leave_date', $multiDates)->pluck('leave_date_new')->toArray();
@@ -96,7 +101,6 @@ class MemberLeavesController extends MemberBaseController
            else
                $holidays = [];
             $daysOff = array_unique (array_merge([] , $holidays) );
-
 
             $removedIds = [];
             for($i = 0 ; $i< count($daysOff ) ;$i++){
