@@ -60,14 +60,11 @@
                                     <hr>
                                     <h6>to</h6>
                                     {{ $pendingLeave->end_leave_date->format($global->date_format) }} ({{ $pendingLeave->end_leave_date->format('l') }})
+                                    <hr>
+                                    @lang('modules.gantt.duration') : {{$pendingLeave->days_count}}
 
                                 @else
-
-                                    <br>
-                                    <br>
-                                    <br>
-
-
+                                    <br><br><br><br><br>
                                     {{ $pendingLeave->leave_date->format($global->date_format) }} ({{ $pendingLeave->leave_date->format('l') }})
                                 @endif
                                     <div class="progress m-l-30 m-r-30 m-t-15">
